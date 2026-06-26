@@ -3,7 +3,9 @@ import { useNavigate } from 'react-router-dom';
 
 export default function Navbar({ user, logout }) {
   const navigate = useNavigate();
-
+  const location = useLocation();
+  const [showDropdown, setShowDropdown] = useState(false);
+  if (!user) return null;
   const handleLogout = () => {
     logout();
     window.location.href = '/';
