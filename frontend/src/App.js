@@ -8,6 +8,7 @@ import Result from './pages/Result';
 import History from './pages/History';
 import Navbar from './components/Navbar';
 import ForgotPassword from './pages/ForgotPassword';
+import Profile from './pages/Profile';
 export default function App() {
   const [user, setUser] = useState(null);
 
@@ -40,6 +41,7 @@ export default function App() {
         <Route path="/result/:id" element={user ? <Result /> : <Navigate to="/auth" />} />
         <Route path="/history" element={user ? <History /> : <Navigate to="/auth" />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/profile" element={user ? <Profile /> : <Navigate to="/auth" />} />
       </Routes>
     </BrowserRouter>
   );
