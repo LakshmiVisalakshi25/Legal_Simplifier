@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
+import Home from './pages/Home';
 import Auth from './pages/Auth';
 import Upload from './pages/Upload';
 import Result from './pages/Result';
@@ -22,20 +23,22 @@ export default function App() {
   };
 
   const logout = () => {
-    localStorage.removeItem('user');
-    localStorage.removeItem('token');
-    setUser(null);
-  };
+  localStorage.removeItem('user');
+  localStorage.removeItem('token');
+  setUser(null);
+  window.location.href = '/';
+};
 
   return (
     <BrowserRouter>
       <Toaster position="top-right" />
       {user && <Navbar user={user} logout={logout} />}
       <Routes>
-        <Route path="/" element={user ? <Navigate to="/upload" /> : <Auth login={login} />} />
-        <Route path="/upload" element={user ? <Upload /> : <Navigate to="/" />} />
-        <Route path="/result/:id" element={user ? <Result /> : <Navigate to="/" />} />
-        <Route path="/history" element={user ? <History /> : <Navigate to="/" />} />
+        <Route path="/" element={user ? <Navigate to="/upload" /> : <Home />} />
+        <Route path="/auth" element={user ? <Navigate to="/upload" /> : <Auth login={login} />} />
+        <Route path="/upload" element={user ? <Upload /> : <Navigate to="/auth" />} />
+        <Route path="/result/:id" element={user ? <Result /> : <Navigate to="/auth" />} />
+        <Route path="/history" element={user ? <History /> : <Navigate to="/auth" />} />
       </Routes>
     </BrowserRouter>
   );
