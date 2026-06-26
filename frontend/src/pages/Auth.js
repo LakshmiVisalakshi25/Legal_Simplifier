@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 
 export default function Auth({ login }) {
   const [isLogin, setIsLogin] = useState(true);
   const [form, setForm] = useState({ name: '', email: '', password: '' });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-
+const navigate = useNavigate();
   const handle = async () => {
     setError('');
     setLoading(true);
@@ -50,6 +51,14 @@ export default function Auth({ login }) {
           {isLogin ? "Don't have an account? " : 'Already have an account? '}
           <span onClick={() => { setIsLogin(!isLogin); setError(''); }}>
             {isLogin ? 'Register' : 'Login'}
+          </span>
+        </div>
+        <div style={{ textAlign: 'center', marginTop: '12px' }}>
+          <span
+            onClick={() => navigate('/forgot-password')}
+            style={{ color: '#667eea', cursor: 'pointer', fontSize: '13px' }}
+          >
+            Forgot Password?
           </span>
         </div>
       </div>

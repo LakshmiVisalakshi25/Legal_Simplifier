@@ -7,7 +7,7 @@ import Upload from './pages/Upload';
 import Result from './pages/Result';
 import History from './pages/History';
 import Navbar from './components/Navbar';
-
+import ForgotPassword from './pages/ForgotPassword';
 export default function App() {
   const [user, setUser] = useState(null);
 
@@ -39,6 +39,7 @@ export default function App() {
         <Route path="/upload" element={user ? <Upload /> : <Navigate to="/auth" />} />
         <Route path="/result/:id" element={user ? <Result /> : <Navigate to="/auth" />} />
         <Route path="/history" element={user ? <History /> : <Navigate to="/auth" />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
       </Routes>
     </BrowserRouter>
   );
