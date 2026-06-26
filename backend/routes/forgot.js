@@ -11,7 +11,7 @@ const sendOTPEmail = async (email, otp) => {
       'api-key': process.env.BREVO_API_KEY
     },
     body: JSON.stringify({
-      sender: { name: 'LegalSimplifier', email: 'noreply@legalsimplifier.com' },
+      sender: { name: 'LegalSimplifier', email: 'lakshmivisalakshiganisetti@gmail.com' },
       to: [{ email: email }],
       subject: 'Your Password Reset OTP — LegalSimplifier',
       htmlContent: `
