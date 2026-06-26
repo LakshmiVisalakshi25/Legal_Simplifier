@@ -4,7 +4,7 @@ const fetch = require('node-fetch');
 const User = require('../models/User');
 
 const sendOTPEmail = async (email, otp) => {
-  await fetch('https://api.brevo.com/v3/smtp/email', {
+  const response = await fetch('https://api.brevo.com/v3/smtp/email', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -26,6 +26,11 @@ const sendOTPEmail = async (email, otp) => {
       `
     })
   });
+  const result = await response.json();
+  console.log('Brevo response:', JSON.stringify(result));
+  if (!response.ok) {
+    throw new Error(JSON.stringify(result));
+  }
 };
 
 // Send OTP
@@ -45,7 +50,7 @@ router.post('/send-otp', async (req, res) => {
     await sendOTPEmail(email, otp);
     res.json({ msg: 'OTP sent to your email' });
   } catch (err) {
-    console.error(err);
+    console.error('Send OTP error:', err.message);
     res.status(500).json({ msg: 'Failed to send OTP', error: err.message });
   }
 });
