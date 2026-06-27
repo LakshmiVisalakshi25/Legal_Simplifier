@@ -15,7 +15,7 @@ export default function Profile({ logout }) {
   const [form, setForm] = useState({ name: '', email: '' });
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem('user') || '{}');
-
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     setForm({ name: user.name || '', email: user.email || '' });
     const fetch = async () => {
