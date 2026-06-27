@@ -31,5 +31,33 @@ router.post('/login', async (req, res) => {
     res.status(500).json({ msg: 'Server error' });
   }
 });
+const auth = require('../middleware/auth');
 
+// Update profile
+router.put('/update-profile', auth, async (req, res) => {
+  try {
+    const { name, email } = req.body;
+    if (!name.trim() || !email.trim()) return res.status(400).json({ msg: 'Name and email are required' });
+    const existing = await User.findOne({ email, _id: { $ne: req.user.id } });
+    if (existing) return res.status(400).json({ msg: 'Email already in use' });
+    const user = await User.findByIdAndUpdate(
+      req.user.id,
+      { name, email },
+      { new: true }
+    ).select('-password');
+    res.json({ user });
+  } catch (err) {
+    res.status(500).json({ msg: 'Server error' });
+  }
+});
+
+// Delete account
+router.delete('/delete-account', auth, async (req, res) => {
+  try {
+    await User.findByIdAndDelete(req.user.id);
+    res.json({ msg: 'Account deleted' });
+  } catch (err) {
+    res.status(500).json({ msg: 'Server error' });
+  }
+});
 module.exports = router;

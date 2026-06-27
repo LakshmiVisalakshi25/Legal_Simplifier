@@ -1,25 +1,129 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 export default function Navbar({ user, logout }) {
   const navigate = useNavigate();
-  const location = useLocation();
+  // const location = useLocation();
   const [showDropdown, setShowDropdown] = useState(false);
+
   if (!user) return null;
+
   const handleLogout = () => {
     logout();
     window.location.href = '/';
   };
 
   return (
-    <div className="navbar">
-      <h1 onClick={() => navigate('/upload')} style={{ cursor: 'pointer' }}>⚖️ LegalSimplifier</h1>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-        <span onClick={() => navigate('/history')} style={{ color: '#a0aec0', cursor: 'pointer', fontSize: '14px' }}>📋 History</span>
-        <span onClick={() => navigate('/profile')} style={{ color: '#a0aec0', cursor: 'pointer', fontSize: '14px' }}>👤 Profile</span>
-        <span style={{ color: '#a0aec0', fontSize: '14px' }}>Hi, {user.name}</span>
-        <button className="nav-btn" onClick={handleLogout}>Logout</button>
+    <div style={{
+      background: '#1a1a2e',
+      padding: '0 32px',
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      height: '60px',
+      position: 'sticky',
+      top: 0,
+      zIndex: 100,
+      boxShadow: '0 2px 12px rgba(0,0,0,0.3)'
+    }}>
+
+      {/* Logo */}
+      <div
+        onClick={() => navigate('/upload')}
+        style={{ fontSize: '18px', fontWeight: '700', color: '#fff', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px' }}
+      >
+        ⚖️ <span>LegalSimplifier</span>
       </div>
+
+      {/* User avatar dropdown only */}
+      <div style={{ position: 'relative' }}>
+        <button
+          onClick={() => setShowDropdown(!showDropdown)}
+          style={{
+            background: 'rgba(102,126,234,0.15)',
+            border: '1px solid rgba(102,126,234,0.3)',
+            color: '#fff',
+            padding: '6px 14px',
+            borderRadius: '20px',
+            fontSize: '14px',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px'
+          }}
+        >
+          <div style={{
+            width: '26px',
+            height: '26px',
+            background: 'linear-gradient(135deg, #667eea, #764ba2)',
+            borderRadius: '50%',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontSize: '12px',
+            fontWeight: '700',
+            color: '#fff'
+          }}>
+            {user.name?.charAt(0).toUpperCase()}
+          </div>
+          <span>{user.name?.split(' ')[0]}</span>
+          <span style={{ fontSize: '10px', opacity: 0.6 }}>▼</span>
+        </button>
+
+        {/* Dropdown */}
+        {showDropdown && (
+          <div style={{
+            position: 'absolute',
+            right: 0,
+            top: '48px',
+            background: '#fff',
+            borderRadius: '12px',
+            boxShadow: '0 8px 24px rgba(0,0,0,0.15)',
+            minWidth: '190px',
+            overflow: 'hidden',
+            zIndex: 200
+          }}>
+            <div style={{ padding: '14px 16px', borderBottom: '1px solid #f0f0f0', background: '#f8fafc' }}>
+              <div style={{ fontSize: '13px', fontWeight: '600', color: '#1a1a2e' }}>{user.name}</div>
+              <div style={{ fontSize: '11px', color: '#a0aec0', marginTop: '2px' }}>{user.email}</div>
+            </div>
+            <button
+              onClick={() => { navigate('/upload'); setShowDropdown(false); }}
+              style={{ width: '100%', background: 'transparent', border: 'none', padding: '12px 16px', textAlign: 'left', fontSize: '13px', color: '#4a5568', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '10px' }}
+            >
+              📄 Analyze Document
+            </button>
+            <button
+              onClick={() => { navigate('/history'); setShowDropdown(false); }}
+              style={{ width: '100%', background: 'transparent', border: 'none', padding: '12px 16px', textAlign: 'left', fontSize: '13px', color: '#4a5568', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '10px' }}
+            >
+              📋 History
+            </button>
+            <button
+              onClick={() => { navigate('/profile'); setShowDropdown(false); }}
+              style={{ width: '100%', background: 'transparent', border: 'none', padding: '12px 16px', textAlign: 'left', fontSize: '13px', color: '#4a5568', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '10px' }}
+            >
+              👤 My Profile
+            </button>
+            <div style={{ borderTop: '1px solid #f0f0f0' }}>
+              <button
+                onClick={handleLogout}
+                style={{ width: '100%', background: 'transparent', border: 'none', padding: '12px 16px', textAlign: 'left', fontSize: '13px', color: '#e53e3e', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '10px' }}
+              >
+                🚪 Logout
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Close dropdown on outside click */}
+      {showDropdown && (
+        <div
+          onClick={() => setShowDropdown(false)}
+          style={{ position: 'fixed', inset: 0, zIndex: 99 }}
+        />
+      )}
     </div>
   );
 }
